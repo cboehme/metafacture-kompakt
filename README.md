@@ -1,4 +1,4 @@
-Workshop: Metafacture Kompakt
+# Metafacture Kompakt Workshop
 
 Dieses Projekt ist der Grundlage für den Workshop "Metafacture 
 Kompakt: Metadatenverarbeitung in Java mit Metafacture".
