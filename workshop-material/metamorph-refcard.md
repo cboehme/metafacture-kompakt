@@ -55,7 +55,7 @@ ausgegeben:
 
 ```xml
 <data source=="SOURCE-PATTERN">
-	<lowercase />
+	<case to="lower" />
 	<replace match="REPLACE-PATTERN" with="WITH-VALUE" />
 </data>
 ```
@@ -71,6 +71,32 @@ in mehrere Literale zu zerlegen, die dann nacheinander ausgegeben werden:
 	<split delimiter="DELIMITER" />
 </data>
 ```
+
+### Funktionen zur Literalverarbeitung
+
+Eine Auswahl der Funktionen, die im `data`-Statement verwendet werden können:
+
+* `<regexp match="REGEXP" format="OUTPUT-STRING" />`: Wendet einen regulären
+  Ausdruck auf den empfangenen Literalwert an. Wenn der Literalwert nicht von
+  dem Ausdruck erfasst wird, wird die Verarbeitung abgebrochen. Ansonsten wird
+  der im `format`-Attribut definierte Ausgabewert ausgegeben. Dieser kann
+  _Capture Groups_ im regulären Ausdruck referenzieren (die erste geklammerte
+  Gruppe bspw. über `${1}`). Ist das `format`-Argument nicht angegeben, wird der
+  unveränderte Literalwert weitergegeben.
+* `<trim />`: Entfernt Leerzeichen am Anfang und Ende des Literalwerts.
+* `<occurrence only="PATTERN" />`: Gibt Literalwerte abhängig von der 
+  Reihenfolge ihres Auftretens weiter. Ist Pattern eine Zahl _n_, wird nur der
+  _n_-te Literalwert weitergegeben. Alternativ ist es auch möglich die Muster
+  `lessThen n` und `moreThen n` zu verwenden, um nur die ersten _n_ Literalwerte
+  oder nur alle Literale nach den ersten _n_ Literalwerten weiterzuverarbeiten.
+* `<split delimiter="STRING" />`: Zerlegt den empfangenen Literalwert und gibt
+  jeden Teilwert einzeln an die Folgefunktion weiter.
+* `<compose prefix="STRING" postfix="STRING" />`: Fügt einen Präfix- und/oder
+  Suffixtext an den empfangenen Literalwert an.
+* `<constant value="STRING" />`: Ersetzt den Literalwert durch einen konstanten
+  Wert.
+* `<equals string="STRING" />`: Setzt die Verarbeitung nur dann fort, wenn der
+  Literalwert dem Wert des `string`-Attributs entspricht.
 
 ## Literale kombinieren
 
