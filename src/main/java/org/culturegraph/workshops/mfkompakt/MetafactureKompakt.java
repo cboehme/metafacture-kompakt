@@ -25,12 +25,10 @@
  */
 package org.culturegraph.workshops.mfkompakt;
 
-import org.culturegraph.mf.formeta.formatter.FormatterStyle;
 import org.culturegraph.mf.morph.Metamorph;
-import org.culturegraph.mf.stream.converter.FormetaEncoder;
+import org.culturegraph.mf.stream.converter.PojoEncoder;
 import org.culturegraph.mf.stream.converter.xml.MarcXmlHandler;
 import org.culturegraph.mf.stream.converter.xml.XmlDecoder;
-import org.culturegraph.mf.stream.sink.ObjectWriter;
 import org.culturegraph.mf.stream.source.FileOpener;
 
 /**
@@ -47,9 +45,8 @@ public final class MetafactureKompakt {
 		final XmlDecoder decoder = new XmlDecoder();
 		final MarcXmlHandler marcHandler = new MarcXmlHandler();
 		final Metamorph morph = new Metamorph("transformation.xml");
-		final FormetaEncoder encoder = new FormetaEncoder();
-		encoder.setStyle(FormatterStyle.MULTILINE);
-		final ObjectWriter<String> writer = new ObjectWriter<String>("output.txt");
+		final PojoEncoder<Person> encoder = new PojoEncoder<Person>(Person.class);
+		final PersonsCollector collector = new PersonsCollector();
 
 		// Connect modules to form a processing pipeline:
 		opener
@@ -57,11 +54,24 @@ public final class MetafactureKompakt {
 				.setReceiver(marcHandler)
 				.setReceiver(morph)
 				.setReceiver(encoder)
-				.setReceiver(writer);
+				.setReceiver(collector);
 
 		// Feed the input data into the pipeline:
 		opener.process("persons_marcxml.xml");
 		opener.closeStream();
+
+		// Output the collection of persons generated from
+		// the marc data:
+		for (final Person person : collector.getPersons()) {
+			System.out.println(person.getName() + ":");
+			System.out.println("  GND-Nummer: " + person.getId());
+			System.out.println("  Lebensdaten: " + person.getYearOfBirth() + " bis "
+					+ person.getYearOfDeath());
+			System.out.println("  Assozierte Orte:");
+			for (final String location : person.getLocations()) {
+				System.out.println("   " + location);
+			}
+		}
 	}
 
 }
