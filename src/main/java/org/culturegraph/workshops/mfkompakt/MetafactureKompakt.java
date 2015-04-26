@@ -26,10 +26,10 @@
 package org.culturegraph.workshops.mfkompakt;
 
 import org.culturegraph.mf.formeta.formatter.FormatterStyle;
+import org.culturegraph.mf.morph.Metamorph;
 import org.culturegraph.mf.stream.converter.FormetaEncoder;
 import org.culturegraph.mf.stream.converter.xml.MarcXmlHandler;
 import org.culturegraph.mf.stream.converter.xml.XmlDecoder;
-import org.culturegraph.mf.stream.pipe.StreamLogger;
 import org.culturegraph.mf.stream.sink.ObjectWriter;
 import org.culturegraph.mf.stream.source.FileOpener;
 
@@ -46,7 +46,7 @@ public final class MetafactureKompakt {
 		final FileOpener opener = new FileOpener();
 		final XmlDecoder decoder = new XmlDecoder();
 		final MarcXmlHandler marcHandler = new MarcXmlHandler();
-		final StreamLogger logger = new StreamLogger();
+		final Metamorph morph = new Metamorph("transformation.xml");
 		final FormetaEncoder encoder = new FormetaEncoder();
 		encoder.setStyle(FormatterStyle.MULTILINE);
 		final ObjectWriter<String> writer = new ObjectWriter<String>("output.txt");
@@ -55,7 +55,7 @@ public final class MetafactureKompakt {
 		opener
 				.setReceiver(decoder)
 				.setReceiver(marcHandler)
-				.setReceiver(logger)
+				.setReceiver(morph)
 				.setReceiver(encoder)
 				.setReceiver(writer);
 
