@@ -8,9 +8,11 @@ des Workshops.
 
 Im Branch **implementation** ist die im Workshop entwickelte
 Anwendung komplett umgesetzt. Die Tags
+
  * **implementation-step-1**
  * **implementation-step-2**
  * **implementation-step-3**
+
 verweisen auf die Zwischenstände der Implementierung.
 
 Im Verzeichnis **workshop-material** sind die Folien und Handouts zum
